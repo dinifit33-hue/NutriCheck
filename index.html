@@ -1,0 +1,2014 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NutriCheck - Cek Risiko Kekurangan Zat Gizi</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #4CAF50;
+            --primary-light: #C8E6C9;
+            --primary-dark: #388E3C;
+            --secondary: #FF9800;
+            --secondary-light: #FFE0B2;
+            --accent: #2196F3;
+            --text: #212121;
+            --text-light: #757575;
+            --background: #F5F5F5;
+            --white: #FFFFFF;
+            --danger: #F44336;
+            --warning: #FFC107;
+            --success: #4CAF50;
+            --card-shadow: 0 4px 12px rgba(0,0,0,0.08);
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: var(--background);
+            color: var(--text);
+            line-height: 1.6;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        header {
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            color: white;
+            padding: 20px 0;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .logo h1 {
+            font-size: 1.8rem;
+            font-weight: 700;
+        }
+        
+        .logo-icon {
+            font-size: 2rem;
+        }
+        
+        nav ul {
+            display: flex;
+            list-style: none;
+            gap: 20px;
+        }
+        
+        nav a {
+            color: white;
+            text-decoration: none;
+            font-weight: 500;
+            padding: 5px 10px;
+            border-radius: 4px;
+            transition: background 0.3s;
+        }
+        
+        nav a:hover, nav a.active {
+            background: rgba(255,255,255,0.2);
+        }
+        
+        .hero {
+            background: linear-gradient(rgba(76, 175, 80, 0.8), rgba(56, 142, 60, 0.9)), url('https://images.unsplash.com/photo-1490818387583-1baba5e638af?ixlib=rb-4.0.3') center/cover;
+            color: white;
+            text-align: center;
+            padding: 80px 20px;
+            margin-bottom: 40px;
+        }
+        
+        .hero h2 {
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+        }
+        
+        .hero p {
+            font-size: 1.2rem;
+            max-width: 700px;
+            margin: 0 auto 30px;
+        }
+        
+        .btn {
+            display: inline-block;
+            background: var(--secondary);
+            color: white;
+            padding: 12px 24px;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 600;
+            border: none;
+            cursor: pointer;
+            transition: all 0.3s;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+        
+        .btn:hover {
+            background: #F57C00;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 8px rgba(0,0,0,0.15);
+        }
+        
+        .btn-primary {
+            background: var(--primary);
+        }
+        
+        .btn-primary:hover {
+            background: var(--primary-dark);
+        }
+        
+        .btn-small {
+            padding: 8px 16px;
+            font-size: 0.9rem;
+        }
+        
+        .section-title {
+            text-align: center;
+            margin-bottom: 40px;
+            color: var(--primary-dark);
+        }
+        
+        .section-title h2 {
+            font-size: 2rem;
+            margin-bottom: 10px;
+        }
+        
+        .section-title p {
+            color: var(--text-light);
+            max-width: 700px;
+            margin: 0 auto;
+        }
+        
+        .features {
+            padding: 60px 0;
+        }
+        
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+        }
+        
+        .feature-card {
+            background: var(--white);
+            border-radius: 10px;
+            padding: 25px;
+            box-shadow: var(--card-shadow);
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        
+        .feature-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+        }
+        
+        .feature-icon {
+            font-size: 2.5rem;
+            color: var(--primary);
+            margin-bottom: 15px;
+        }
+        
+        .feature-card h3 {
+            margin-bottom: 15px;
+            color: var(--primary-dark);
+        }
+        
+        .app-section {
+            background: var(--white);
+            border-radius: 10px;
+            padding: 30px;
+            box-shadow: var(--card-shadow);
+            margin-bottom: 40px;
+            display: none;
+        }
+        
+        .app-section.active {
+            display: block;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+        }
+        
+        .form-control {
+            width: 100%;
+            padding: 12px 15px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 1rem;
+            transition: border 0.3s;
+        }
+        
+        .form-control:focus {
+            border-color: var(--primary);
+            outline: none;
+        }
+        
+        .form-row {
+            display: flex;
+            gap: 20px;
+        }
+        
+        .form-row .form-group {
+            flex: 1;
+        }
+        
+        .checkbox-group {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 10px;
+        }
+        
+        .checkbox-item {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+        
+        .checkbox-item input {
+            margin-right: 5px;
+        }
+        
+        .results {
+            background: var(--primary-light);
+            border-radius: 10px;
+            padding: 20px;
+            margin-top: 30px;
+            display: none;
+        }
+        
+        .results h3 {
+            margin-bottom: 15px;
+            color: var(--primary-dark);
+        }
+        
+        .bmi-result {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+        
+        .bmi-value {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--primary-dark);
+        }
+        
+        .status-badge {
+            padding: 5px 15px;
+            border-radius: 20px;
+            color: white;
+            font-weight: 600;
+        }
+        
+        .status-underweight {
+            background: var(--warning);
+        }
+        
+        .status-normal {
+            background: var(--success);
+        }
+        
+        .status-overweight {
+            background: var(--secondary);
+        }
+        
+        .status-obese {
+            background: var(--danger);
+        }
+        
+        .status-low {
+            background: var(--success);
+        }
+        
+        .status-medium {
+            background: var(--warning);
+        }
+        
+        .status-high {
+            background: var(--danger);
+        }
+        
+        .progress-container {
+            margin: 30px 0;
+        }
+        
+        .progress-label {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 5px;
+        }
+        
+        .progress-bar {
+            height: 10px;
+            background: #e0e0e0;
+            border-radius: 5px;
+            overflow: hidden;
+        }
+        
+        .progress-fill {
+            height: 100%;
+            background: var(--primary);
+            border-radius: 5px;
+            transition: width 0.5s;
+        }
+        
+        .food-categories {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 15px;
+            margin: 20px 0;
+        }
+        
+        .food-category {
+            background: var(--primary-light);
+            border-radius: 10px;
+            padding: 15px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .food-category:hover {
+            background: var(--primary);
+            color: white;
+        }
+        
+        .food-category.selected {
+            background: var(--primary-dark);
+            color: white;
+        }
+        
+        .food-category i {
+            font-size: 1.5rem;
+            margin-bottom: 10px;
+            display: block;
+        }
+        
+        .tab-navigation {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+        
+        .tab-btn {
+            padding: 12px 24px;
+            background: var(--white);
+            border: none;
+            border-radius: 50px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .tab-btn:hover {
+            background: var(--primary-light);
+        }
+        
+        .tab-btn.active {
+            background: var(--primary);
+            color: white;
+        }
+        
+        .dashboard {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin-top: 20px;
+        }
+        
+        .dashboard-card {
+            background: var(--white);
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: var(--card-shadow);
+        }
+        
+        .dashboard-card h3 {
+            margin-bottom: 15px;
+            color: var(--primary-dark);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .advice-list {
+            list-style: none;
+        }
+        
+        .advice-list li {
+            padding: 10px 0;
+            border-bottom: 1px solid #eee;
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+        }
+        
+        .advice-list li:last-child {
+            border-bottom: none;
+        }
+        
+        .advice-icon {
+            color: var(--primary);
+            font-size: 1.2rem;
+            margin-top: 2px;
+        }
+        
+        footer {
+            background: var(--primary-dark);
+            color: white;
+            padding: 40px 0 20px;
+            margin-top: 60px;
+        }
+        
+        .footer-content {
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 30px;
+            margin-bottom: 30px;
+        }
+        
+        .footer-section {
+            flex: 1;
+            min-width: 250px;
+        }
+        
+        .footer-section h3 {
+            margin-bottom: 20px;
+            font-size: 1.2rem;
+        }
+        
+        .footer-section ul {
+            list-style: none;
+        }
+        
+        .footer-section ul li {
+            margin-bottom: 10px;
+        }
+        
+        .footer-section a {
+            color: #E0E0E0;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+        
+        .footer-section a:hover {
+            color: white;
+        }
+        
+        .copyright {
+            text-align: center;
+            padding-top: 20px;
+            border-top: 1px solid rgba(255,255,255,0.1);
+            color: #E0E0E0;
+            font-size: 0.9rem;
+        }
+        
+        /* Responsive Styles */
+        @media (max-width: 768px) {
+            .header-content {
+                flex-direction: column;
+                gap: 15px;
+            }
+            
+            nav ul {
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+            
+            .hero h2 {
+                font-size: 2rem;
+            }
+            
+            .form-row {
+                flex-direction: column;
+                gap: 0;
+            }
+            
+            .dashboard {
+                grid-template-columns: 1fr;
+            }
+            
+            .tab-btn {
+                padding: 10px 15px;
+                font-size: 0.9rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <div class="header-content">
+                <div class="logo">
+                    <span class="logo-icon">🌱</span>
+                    <h1>NutriCheck</h1>
+                </div>
+                <nav>
+                    <ul>
+                        <li><a href="#home" class="active">Beranda</a></li>
+                        <li><a href="#features">Fitur</a></li>
+                        <li><a href="#calculator">Kalkulator</a></li>
+                        <li><a href="#about">Tentang</a></li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+    </header>
+
+    <section class="hero" id="home">
+        <div class="container">
+            <h2>Cek Risiko Kekurangan Zat Gizi dengan Mudah</h2>
+            <p>NutriCheck membantu memantau status gizi, risiko kesehatan ringan, dan pola makan sehari-hari secara personal, cepat, dan mudah dipahami.</p>
+            <a href="#calculator" class="btn">Mulai Sekarang</a>
+        </div>
+    </section>
+
+    <section class="features" id="features">
+        <div class="container">
+            <div class="section-title">
+                <h2>Fitur Utama NutriCheck</h2>
+                <p>Semua yang Anda butuhkan untuk memantau kesehatan gizi dalam satu aplikasi</p>
+            </div>
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">📊</div>
+                    <h3>Kalkulator IMT & Status Gizi</h3>
+                    <p>Hitung Indeks Massa Tubuh (IMT) dan dapatkan status gizi secara akurat. Pantau tren IMT selama 6 bulan dengan grafik warna-warni.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">🩸</div>
+                    <h3>Cek Risiko Anemia</h3>
+                    <p>Analisis risiko anemia berdasarkan pola makan, riwayat menstruasi, dan keluhan. Dapatkan saran personal untuk meningkatkan asupan zat besi.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">💪</div>
+                    <h3>Cek Kebutuhan Protein & Karbohidrat</h3>
+                    <p>Hitung kebutuhan protein dan karbohidrat harian dengan rumus Mifflin-St Jeor. Bandingkan dengan konsumsi aktual dan dapatkan rekomendasi.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">🥑</div>
+                    <h3>Cek Kebutuhan Lemak & Serat</h3>
+                    <p>Analisis kebutuhan lemak sehat dan serat harian berdasarkan profil Anda. Dapatkan saran untuk meningkatkan kualitas asupan gizi.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">💧</div>
+                    <h3>Cek Kebutuhan Cairan</h3>
+                    <p>Hitung kebutuhan hidrasi harian berdasarkan berat badan dan aktivitas. Pantau kecukupan asupan cairan untuk kesehatan optimal.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">🎯</div>
+                    <h3>Saran Personal</h3>
+                    <p>Dapatkan rekomendasi yang relevan, sederhana, dan bisa langsung dilakukan berdasarkan hasil analisis kondisi gizi Anda.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="calculator" class="container">
+        <div class="section-title">
+            <h2>Alat Pemeriksaan Nutrisi</h2>
+            <p>Gunakan alat-alat berikut untuk memeriksa status gizi dan kesehatan Anda</p>
+        </div>
+        
+        <div class="tab-navigation">
+            <button class="tab-btn active" data-tab="bmi-tab">
+                <i class="fas fa-weight-scale"></i> IMT & Status Gizi
+            </button>
+            <button class="tab-btn" data-tab="anemia-tab">
+                <i class="fas fa-tint"></i> Cek Anemia
+            </button>
+            <button class="tab-btn" data-tab="protein-tab">
+                <i class="fas fa-dumbbell"></i> Kebutuhan Protein
+            </button>
+            <button class="tab-btn" data-tab="carbs-tab">
+                <i class="fas fa-bread-slice"></i> Kebutuhan Karbohidrat
+            </button>
+            <button class="tab-btn" data-tab="fat-tab">
+                <i class="fas fa-oil-can"></i> Kebutuhan Lemak
+            </button>
+            <button class="tab-btn" data-tab="fiber-tab">
+                <i class="fas fa-leaf"></i> Kebutuhan Serat
+            </button>
+            <button class="tab-btn" data-tab="fluid-tab">
+                <i class="fas fa-tint"></i> Kebutuhan Cairan
+            </button>
+            <button class="tab-btn" data-tab="food-tab">
+                <i class="fas fa-utensils"></i> Catatan Makan
+            </button>
+            <button class="tab-btn" data-tab="advice-tab">
+                <i class="fas fa-lightbulb"></i> Saran Personal
+            </button>
+        </div>
+        
+        <!-- Kalkulator IMT -->
+        <div id="bmi-tab" class="app-section active">
+            <h2>Kalkulator IMT & Status Gizi</h2>
+            <p>Hitung Indeks Massa Tubuh (IMT) Anda dan dapatkan status gizi secara akurat.</p>
+            
+            <form id="bmi-form">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="height">Tinggi Badan (cm)</label>
+                        <input type="number" id="height" class="form-control" placeholder="Contoh: 165" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="weight">Berat Badan (kg)</label>
+                        <input type="number" id="weight" class="form-control" placeholder="Contoh: 60" required>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="gender">Jenis Kelamin</label>
+                        <select id="gender" class="form-control" required>
+                            <option value="">Pilih Jenis Kelamin</option>
+                            <option value="male">Laki-laki</option>
+                            <option value="female">Perempuan</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="age">Usia</label>
+                        <input type="number" id="age" class="form-control" placeholder="Contoh: 25" required>
+                    </div>
+                </div>
+                <button type="submit" class="btn btn-primary">Hitung IMT</button>
+            </form>
+            
+            <div class="results" id="bmi-results">
+                <h3>Hasil Perhitungan IMT</h3>
+                <div class="bmi-result">
+                    <div>
+                        <div>Indeks Massa Tubuh</div>
+                        <div class="bmi-value" id="bmi-value">-</div>
+                    </div>
+                    <div class="status-badge" id="bmi-status">-</div>
+                </div>
+                
+                <div class="progress-container">
+                    <div class="progress-label">
+                        <span>Kurus</span>
+                        <span>Normal</span>
+                        <span>Gemuk</span>
+                        <span>Obesitas</span>
+                    </div>
+                    <div class="progress-bar">
+                        <div class="progress-fill" id="bmi-progress"></div>
+                    </div>
+                </div>
+                
+                <div id="bmi-advice">
+                    <!-- Saran akan diisi oleh JavaScript -->
+                </div>
+            </div>
+        </div>
+        
+        <!-- Cek Risiko Anemia -->
+        <div id="anemia-tab" class="app-section">
+            <h2>Cek Risiko Anemia</h2>
+            <p>Analisis risiko anemia berdasarkan pola makan, riwayat menstruasi, dan keluhan.</p>
+            
+            <form id="anemia-form">
+                <div class="form-group">
+                    <label>Seberapa sering Anda mengonsumsi makanan kaya zat besi?</label>
+                    <select id="iron-intake" class="form-control" required>
+                        <option value="">Pilih Frekuensi</option>
+                        <option value="rare">Jarang (kurang dari 1x/minggu)</option>
+                        <option value="occasional">Kadang-kadang (1-2x/minggu)</option>
+                        <option value="regular">Sering (3-5x/minggu)</option>
+                        <option value="daily">Setiap hari</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label>Seberapa sering Anda mengonsumsi sayuran hijau?</label>
+                    <select id="greens-intake" class="form-control" required>
+                        <option value="">Pilih Frekuensi</option>
+                        <option value="rare">Jarang (kurang dari 1x/minggu)</option>
+                        <option value="occasional">Kadang-kadang (1-2x/minggu)</option>
+                        <option value="regular">Sering (3-5x/minggu)</option>
+                        <option value="daily">Setiap hari</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label>Apakah Anda sering minum teh/kopi setelah makan?</label>
+                    <select id="tea-coffee" class="form-control" required>
+                        <option value="">Pilih Kebiasaan</option>
+                        <option value="yes">Ya, sering</option>
+                        <option value="sometimes">Kadang-kadang</option>
+                        <option value="no">Tidak pernah</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label>Keluhan yang sering dialami:</label>
+                    <div class="checkbox-group">
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="symptom1" value="lemas">
+                            <label for="symptom1">Lemas</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="symptom2" value="pucat">
+                            <label for="symptom2">Pucat</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="symptom3" value="sulit-fokus">
+                            <label for="symptom3">Sulit Fokus</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="symptom4" value="sesak">
+                            <label for="symptom4">Sesak Nafas</label>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="form-group" id="menstruation-group" style="display: none;">
+                    <label>Riwayat menstruasi (jika relevan):</label>
+                    <select id="menstruation" class="form-control">
+                        <option value="normal">Normal</option>
+                        <option value="heavy">Volume banyak</option>
+                        <option value="irregular">Tidak teratur</option>
+                    </select>
+                </div>
+                
+                <button type="submit" class="btn btn-primary">Cek Risiko Anemia</button>
+            </form>
+            
+            <div class="results" id="anemia-results">
+                <h3>Hasil Pemeriksaan Risiko Anemia</h3>
+                <div class="bmi-result">
+                    <div>
+                        <div>Kategori Risiko</div>
+                        <div class="bmi-value" id="anemia-risk">-</div>
+                    </div>
+                    <div class="status-badge" id="anemia-status">-</div>
+                </div>
+                
+                <div id="anemia-advice">
+                    <!-- Saran akan diisi oleh JavaScript -->
+                </div>
+            </div>
+        </div>
+        
+        <!-- Cek Kebutuhan Protein -->
+        <div id="protein-tab" class="app-section">
+            <h2>Cek Kebutuhan Protein</h2>
+            <p>Hitung kebutuhan protein harian Anda dan bandingkan dengan konsumsi aktual.</p>
+            
+            <form id="protein-form">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="protein-weight">Berat Badan (kg)</label>
+                        <input type="number" id="protein-weight" class="form-control" placeholder="Contoh: 60" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="protein-activity">Tingkat Aktivitas Fisik</label>
+                        <select id="protein-activity" class="form-control" required>
+                            <option value="">Pilih Aktivitas</option>
+                            <option value="sedentary">Sedentari (jarang olahraga)</option>
+                            <option value="light">Ringan (olahraga 1-3x/minggu)</option>
+                            <option value="moderate">Sedang (olahraga 3-5x/minggu)</option>
+                            <option value="active">Aktif (olahraga 6-7x/minggu)</option>
+                            <option value="very-active">Sangat aktif (atlet/profesional)</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label>Perkiraan asupan protein harian (dalam porsi):</label>
+                    <select id="protein-intake" class="form-control" required>
+                        <option value="">Pilih Jumlah Porsi</option>
+                        <option value="low">Rendah (kurang dari 2 porsi/hari)</option>
+                        <option value="medium">Sedang (2-3 porsi/hari)</option>
+                        <option value="high">Tinggi (lebih dari 3 porsi/hari)</option>
+                    </select>
+                </div>
+                
+                <button type="submit" class="btn btn-primary">Hitung Kebutuhan Protein</button>
+            </form>
+            
+            <div class="results" id="protein-results">
+                <h3>Hasil Analisis Kebutuhan Protein</h3>
+                <div class="bmi-result">
+                    <div>
+                        <div>Kebutuhan Protein Harian</div>
+                        <div class="bmi-value" id="protein-need">-</div>
+                    </div>
+                    <div class="status-badge" id="protein-status">-</div>
+                </div>
+                
+                <div class="progress-container">
+                    <div class="progress-label">
+                        <span>Kekurangan</span>
+                        <span>Cukup</span>
+                        <span>Berlebih</span>
+                    </div>
+                    <div class="progress-bar">
+                        <div class="progress-fill" id="protein-progress"></div>
+                    </div>
+                </div>
+                
+                <div id="protein-advice">
+                    <!-- Saran akan diisi oleh JavaScript -->
+                </div>
+            </div>
+        </div>
+        
+        <!-- Cek Kebutuhan Karbohidrat -->
+        <div id="carbs-tab" class="app-section">
+            <h2>Cek Kebutuhan Karbohidrat</h2>
+            <p>Hitung kebutuhan karbohidrat harian Anda dan bandingkan dengan konsumsi aktual.</p>
+            
+            <form id="carbs-form">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="carbs-weight">Berat Badan (kg)</label>
+                        <input type="number" id="carbs-weight" class="form-control" placeholder="Contoh: 60" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="carbs-activity">Tingkat Aktivitas Fisik</label>
+                        <select id="carbs-activity" class="form-control" required>
+                            <option value="">Pilih Aktivitas</option>
+                            <option value="sedentary">Sedentari (jarang olahraga)</option>
+                            <option value="light">Ringan (olahraga 1-3x/minggu)</option>
+                            <option value="moderate">Sedang (olahraga 3-5x/minggu)</option>
+                            <option value="active">Aktif (olahraga 6-7x/minggu)</option>
+                            <option value="very-active">Sangat aktif (atlet/profesional)</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label>Perkiraan asupan karbohidrat harian (dalam porsi):</label>
+                    <select id="carbs-intake" class="form-control" required>
+                        <option value="">Pilih Jumlah Porsi</option>
+                        <option value="low">Rendah (kurang dari 3 porsi/hari)</option>
+                        <option value="medium">Sedang (3-5 porsi/hari)</option>
+                        <option value="high">Tinggi (lebih dari 5 porsi/hari)</option>
+                    </select>
+                </div>
+                
+                <button type="submit" class="btn btn-primary">Hitung Kebutuhan Karbohidrat</button>
+            </form>
+            
+            <div class="results" id="carbs-results">
+                <h3>Hasil Analisis Kebutuhan Karbohidrat</h3>
+                <div class="bmi-result">
+                    <div>
+                        <div>Kebutuhan Karbohidrat Harian</div>
+                        <div class="bmi-value" id="carbs-need">-</div>
+                    </div>
+                    <div class="status-badge" id="carbs-status">-</div>
+                </div>
+                
+                <div class="progress-container">
+                    <div class="progress-label">
+                        <span>Kekurangan</span>
+                        <span>Cukup</span>
+                        <span>Berlebih</span>
+                    </div>
+                    <div class="progress-bar">
+                        <div class="progress-fill" id="carbs-progress"></div>
+                    </div>
+                </div>
+                
+                <div id="carbs-advice">
+                    <!-- Saran akan diisi oleh JavaScript -->
+                </div>
+            </div>
+        </div>
+        
+        <!-- Cek Kebutuhan Lemak -->
+        <div id="fat-tab" class="app-section">
+            <h2>Cek Kebutuhan Lemak</h2>
+            <p>Hitung kebutuhan lemak harian Anda dan bandingkan dengan konsumsi aktual.</p>
+            
+            <form id="fat-form">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="fat-weight">Berat Badan (kg)</label>
+                        <input type="number" id="fat-weight" class="form-control" placeholder="Contoh: 60" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="fat-activity">Tingkat Aktivitas Fisik</label>
+                        <select id="fat-activity" class="form-control" required>
+                            <option value="">Pilih Aktivitas</option>
+                            <option value="sedentary">Sedentari (jarang olahraga)</option>
+                            <option value="light">Ringan (olahraga 1-3x/minggu)</option>
+                            <option value="moderate">Sedang (olahraga 3-5x/minggu)</option>
+                            <option value="active">Aktif (olahraga 6-7x/minggu)</option>
+                            <option value="very-active">Sangat aktif (atlet/profesional)</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label>Perkiraan asupan lemak harian (dalam porsi):</label>
+                    <select id="fat-intake" class="form-control" required>
+                        <option value="">Pilih Jumlah Porsi</option>
+                        <option value="low">Rendah (kurang dari 2 porsi/hari)</option>
+                        <option value="medium">Sedang (2-3 porsi/hari)</option>
+                        <option value="high">Tinggi (lebih dari 3 porsi/hari)</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label>Jenis lemak yang sering dikonsumsi:</label>
+                    <div class="checkbox-group">
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="fat-type1" value="saturated">
+                            <label for="fat-type1">Lemak Jenuh (gorengan, daging berlemak)</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="fat-type2" value="unsaturated">
+                            <label for="fat-type2">Lemak Tak Jenuh (alpukat, kacang, minyak zaitun)</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="fat-type3" value="trans">
+                            <label for="fat-type3">Lemak Trans (makanan olahan, margarin)</label>
+                        </div>
+                    </div>
+                </div>
+                
+                <button type="submit" class="btn btn-primary">Hitung Kebutuhan Lemak</button>
+            </form>
+            
+            <div class="results" id="fat-results">
+                <h3>Hasil Analisis Kebutuhan Lemak</h3>
+                <div class="bmi-result">
+                    <div>
+                        <div>Kebutuhan Lemak Harian</div>
+                        <div class="bmi-value" id="fat-need">-</div>
+                    </div>
+                    <div class="status-badge" id="fat-status">-</div>
+                </div>
+                
+                <div class="progress-container">
+                    <div class="progress-label">
+                        <span>Kekurangan</span>
+                        <span>Cukup</span>
+                        <span>Berlebih</span>
+                    </div>
+                    <div class="progress-bar">
+                        <div class="progress-fill" id="fat-progress"></div>
+                    </div>
+                </div>
+                
+                <div id="fat-advice">
+                    <!-- Saran akan diisi oleh JavaScript -->
+                </div>
+            </div>
+        </div>
+        
+        <!-- Cek Kebutuhan Serat -->
+        <div id="fiber-tab" class="app-section">
+            <h2>Cek Kebutuhan Serat</h2>
+            <p>Hitung kebutuhan serat harian Anda dan bandingkan dengan konsumsi aktual.</p>
+            
+            <form id="fiber-form">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="fiber-weight">Berat Badan (kg)</label>
+                        <input type="number" id="fiber-weight" class="form-control" placeholder="Contoh: 60" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="fiber-gender">Jenis Kelamin</label>
+                        <select id="fiber-gender" class="form-control" required>
+                            <option value="">Pilih Jenis Kelamin</option>
+                            <option value="male">Laki-laki</option>
+                            <option value="female">Perempuan</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label>Perkiraan asupan serat harian:</label>
+                    <select id="fiber-intake" class="form-control" required>
+                        <option value="">Pilih Tingkat Konsumsi</option>
+                        <option value="low">Rendah (sedikit sayur/buah)</option>
+                        <option value="medium">Sedang (1-2 porsi sayur/buah per hari)</option>
+                        <option value="high">Tinggi (lebih dari 3 porsi sayur/buah per hari)</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label>Jenis makanan berserat yang sering dikonsumsi:</label>
+                    <div class="checkbox-group">
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="fiber-type1" value="vegetables">
+                            <label for="fiber-type1">Sayuran</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="fiber-type2" value="fruits">
+                            <label for="fiber-type2">Buah-buahan</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="fiber-type3" value="grains">
+                            <label for="fiber-type3">Biji-bijian Utuh</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="fiber-type4" value="legumes">
+                            <label for="fiber-type4">Kacang-kacangan</label>
+                        </div>
+                    </div>
+                </div>
+                
+                <button type="submit" class="btn btn-primary">Hitung Kebutuhan Serat</button>
+            </form>
+            
+            <div class="results" id="fiber-results">
+                <h3>Hasil Analisis Kebutuhan Serat</h3>
+                <div class="bmi-result">
+                    <div>
+                        <div>Kebutuhan Serat Harian</div>
+                        <div class="bmi-value" id="fiber-need">-</div>
+                    </div>
+                    <div class="status-badge" id="fiber-status">-</div>
+                </div>
+                
+                <div class="progress-container">
+                    <div class="progress-label">
+                        <span>Kekurangan</span>
+                        <span>Cukup</span>
+                        <span>Berlebih</span>
+                    </div>
+                    <div class="progress-bar">
+                        <div class="progress-fill" id="fiber-progress"></div>
+                    </div>
+                </div>
+                
+                <div id="fiber-advice">
+                    <!-- Saran akan diisi oleh JavaScript -->
+                </div>
+            </div>
+        </div>
+        
+        <!-- Cek Kebutuhan Cairan -->
+        <div id="fluid-tab" class="app-section">
+            <h2>Cek Kebutuhan Cairan</h2>
+            <p>Hitung kebutuhan cairan harian Anda dan bandingkan dengan konsumsi aktual.</p>
+            
+            <form id="fluid-form">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="fluid-weight">Berat Badan (kg)</label>
+                        <input type="number" id="fluid-weight" class="form-control" placeholder="Contoh: 60" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="fluid-activity">Tingkat Aktivitas Fisik</label>
+                        <select id="fluid-activity" class="form-control" required>
+                            <option value="">Pilih Aktivitas</option>
+                            <option value="sedentary">Sedentari (jarang olahraga)</option>
+                            <option value="light">Ringan (olahraga 1-3x/minggu)</option>
+                            <option value="moderate">Sedang (olahraga 3-5x/minggu)</option>
+                            <option value="active">Aktif (olahraga 6-7x/minggu)</option>
+                            <option value="very-active">Sangat aktif (atlet/profesional)</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label>Perkiraan asupan cairan harian (gelas):</label>
+                    <select id="fluid-intake" class="form-control" required>
+                        <option value="">Pilih Jumlah Gelas</option>
+                        <option value="low">Rendah (kurang dari 6 gelas/hari)</option>
+                        <option value="medium">Sedang (6-8 gelas/hari)</option>
+                        <option value="high">Tinggi (lebih dari 8 gelas/hari)</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label>Jenis cairan yang sering dikonsumsi:</label>
+                    <div class="checkbox-group">
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="fluid-type1" value="water">
+                            <label for="fluid-type1">Air Putih</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="fluid-type2" value="tea-coffee">
+                            <label for="fluid-type2">Teh/Kopi</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="fluid-type3" value="juice">
+                            <label for="fluid-type3">Jus Buah</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="fluid-type4" value="soda">
+                            <label for="fluid-type4">Minuman Bersoda</label>
+                        </div>
+                    </div>
+                </div>
+                
+                <button type="submit" class="btn btn-primary">Hitung Kebutuhan Cairan</button>
+            </form>
+            
+            <div class="results" id="fluid-results">
+                <h3>Hasil Analisis Kebutuhan Cairan</h3>
+                <div class="bmi-result">
+                    <div>
+                        <div>Kebutuhan Cairan Harian</div>
+                        <div class="bmi-value" id="fluid-need">-</div>
+                    </div>
+                    <div class="status-badge" id="fluid-status">-</div>
+                </div>
+                
+                <div class="progress-container">
+                    <div class="progress-label">
+                        <span>Kekurangan</span>
+                        <span>Cukup</span>
+                        <span>Berlebih</span>
+                    </div>
+                    <div class="progress-bar">
+                        <div class="progress-fill" id="fluid-progress"></div>
+                    </div>
+                </div>
+                
+                <div id="fluid-advice">
+                    <!-- Saran akan diisi oleh JavaScript -->
+                </div>
+            </div>
+        </div>
+        
+        <!-- Catatan Makan Harian -->
+        <div id="food-tab" class="app-section">
+            <h2>Catatan Makan Harian</h2>
+            <p>Catat pola makan Anda dengan mudah tanpa ribet. Cukup pilih kategori makanan yang dikonsumsi.</p>
+            
+            <div class="food-categories">
+                <div class="food-category" data-category="carbs">
+                    <i class="fas fa-bread-slice"></i>
+                    <span>Karbohidrat</span>
+                </div>
+                <div class="food-category" data-category="protein">
+                    <i class="fas fa-drumstick-bite"></i>
+                    <span>Protein</span>
+                </div>
+                <div class="food-category" data-category="vegetables">
+                    <i class="fas fa-carrot"></i>
+                    <span>Sayuran</span>
+                </div>
+                <div class="food-category" data-category="fruits">
+                    <i class="fas fa-apple-alt"></i>
+                    <span>Buah</span>
+                </div>
+                <div class="food-category" data-category="sweet-drinks">
+                    <i class="fas fa-wine-bottle"></i>
+                    <span>Minuman Manis</span>
+                </div>
+                <div class="food-category" data-category="snacks">
+                    <i class="fas fa-cookie"></i>
+                    <span>Camilan</span>
+                </div>
+            </div>
+            
+            <div class="form-group">
+                <button id="save-food" class="btn btn-primary">Simpan Catatan Makan Hari Ini</button>
+            </div>
+            
+            <div class="results" id="food-results">
+                <h3>Insight Pola Makan Anda</h3>
+                <div id="food-insight">
+                    <!-- Insight akan diisi oleh JavaScript -->
+                </div>
+                
+                <div class="progress-container">
+                    <div class="progress-label">
+                        <span>Perlu Perbaikan</span>
+                        <span>Cukup Baik</span>
+                        <span>Sangat Baik</span>
+                    </div>
+                    <div class="progress-bar">
+                        <div class="progress-fill" id="food-progress"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Saran Personal -->
+        <div id="advice-tab" class="app-section">
+            <h2>Saran Personal untuk Anda</h2>
+            <p>Rekomendasi yang relevan, sederhana, dan bisa langsung dilakukan berdasarkan hasil analisis.</p>
+            
+            <div class="dashboard">
+                <div class="dashboard-card">
+                    <h3><i class="fas fa-weight-scale"></i> Berdasarkan Status Gizi</h3>
+                    <ul class="advice-list" id="bmi-advice-list">
+                        <li><i class="fas fa-check-circle advice-icon"></i> Lakukan pemeriksaan IMT terlebih dahulu untuk mendapatkan saran</li>
+                    </ul>
+                </div>
+                
+                <div class="dashboard-card">
+                    <h3><i class="fas fa-tint"></i> Berdasarkan Risiko Anemia</h3>
+                    <ul class="advice-list" id="anemia-advice-list">
+                        <li><i class="fas fa-check-circle advice-icon"></i> Lakukan pemeriksaan risiko anemia terlebih dahulu untuk mendapatkan saran</li>
+                    </ul>
+                </div>
+                
+                <div class="dashboard-card">
+                    <h3><i class="fas fa-dumbbell"></i> Berdasarkan Kebutuhan Nutrisi</h3>
+                    <ul class="advice-list" id="nutrient-advice-list">
+                        <li><i class="fas fa-check-circle advice-icon"></i> Lakukan pemeriksaan kebutuhan nutrisi terlebih dahulu untuk mendapatkan saran</li>
+                    </ul>
+                </div>
+                
+                <div class="dashboard-card">
+                    <h3><i class="fas fa-utensils"></i> Berdasarkan Pola Makan</h3>
+                    <ul class="advice-list" id="food-advice-list">
+                        <li><i class="fas fa-check-circle advice-icon"></i> Gunakan catatan makan harian terlebih dahulu untuk mendapatkan saran</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer id="about">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>NutriCheck</h3>
+                    <p>Aplikasi yang membantu memantau status gizi, risiko kesehatan ringan, dan pola makan sehari-hari secara mudah, cepat, dan personal.</p>
+                </div>
+                <div class="footer-section">
+                    <h3>Fitur</h3>
+                    <ul>
+                        <li><a href="#">Kalkulator IMT</a></li>
+                        <li><a href="#">Cek Risiko Anemia</a></li>
+                        <li><a href="#">Cek Kebutuhan Nutrisi</a></li>
+                        <li><a href="#">Catatan Makan</a></li>
+                        <li><a href="#">Saran Personal</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h3>Tentang Kami</h3>
+                    <ul>
+                        <li><a href="#">Tentang NutriCheck</a></li>
+                        <li><a href="#">Tim Kami</a></li>
+                        <li><a href="#">Kebijakan Privasi</a></li>
+                        <li><a href="#">Syarat & Ketentuan</a></li>
+                        <li><a href="#">Kontak</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="copyright">
+                <p>&copy; 2025 NutriCheck. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Tab Navigation
+        document.querySelectorAll('.tab-btn').forEach(button => {
+            button.addEventListener('click', () => {
+                // Remove active class from all buttons and sections
+                document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+                document.querySelectorAll('.app-section').forEach(section => section.classList.remove('active'));
+                
+                // Add active class to clicked button
+                button.classList.add('active');
+                
+                // Show corresponding section
+                const tabId = button.getAttribute('data-tab');
+                document.getElementById(tabId).classList.add('active');
+            });
+        });
+        
+        // Tampilkan form menstruasi jika jenis kelamin perempuan
+        document.getElementById('gender').addEventListener('change', function() {
+            const menstruationGroup = document.getElementById('menstruation-group');
+            if (this.value === 'female') {
+                menstruationGroup.style.display = 'block';
+            } else {
+                menstruationGroup.style.display = 'none';
+            }
+        });
+        
+        // Kalkulator IMT
+        document.getElementById('bmi-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            // Ambil nilai dari form
+            const height = parseFloat(document.getElementById('height').value) / 100; // Konversi ke meter
+            const weight = parseFloat(document.getElementById('weight').value);
+            const age = parseInt(document.getElementById('age').value);
+            const gender = document.getElementById('gender').value;
+            
+            // Hitung IMT
+            const bmi = weight / (height * height);
+            const roundedBmi = bmi.toFixed(1);
+            
+            // Tentukan status gizi
+            let status = '';
+            let statusClass = '';
+            let advice = '';
+            let progressWidth = 0;
+            
+            if (bmi < 18.5) {
+                status = 'Kurus';
+                statusClass = 'status-underweight';
+                advice = 'IMT Anda menunjukkan berat badan kurang. Disarankan untuk meningkatkan asupan kalori dan protein secara bertahap. Konsultasikan dengan ahli gizi untuk rencana makan yang tepat.';
+                progressWidth = 20;
+                
+                // Simpan saran untuk dashboard
+                localStorage.setItem('bmiAdvice', JSON.stringify([
+                    'Tingkatkan asupan kalori harian secara bertahap',
+                    'Perbanyak konsumsi protein seperti telur, daging, dan kacang-kacangan',
+                    'Sarapan secara teratur untuk memulai metabolisme',
+                    'Tambahkan camilan sehat di antara waktu makan'
+                ]));
+            } else if (bmi >= 18.5 && bmi < 25) {
+                status = 'Normal';
+                statusClass = 'status-normal';
+                advice = 'IMT Anda dalam kategori normal. Pertahankan pola makan seimbang dan aktivitas fisik rutin untuk menjaga kesehatan optimal.';
+                progressWidth = 50;
+                
+                // Simpan saran untuk dashboard
+                localStorage.setItem('bmiAdvice', JSON.stringify([
+                    'Pertahankan pola makan seimbang dengan gizi lengkap',
+                    'Lakukan aktivitas fisik rutin 3-5 kali per minggu',
+                    'Perbanyak konsumsi sayuran dan buah-buahan',
+                    'Batasi makanan tinggi gula dan lemak jenuh'
+                ]));
+            } else if (bmi >= 25 && bmi < 30) {
+                status = 'Gemuk';
+                statusClass = 'status-overweight';
+                advice = 'IMT Anda menunjukkan berat badan berlebih. Disarankan untuk mengurangi asupan kalori, meningkatkan aktivitas fisik, dan memperbanyak konsumsi sayur dan buah.';
+                progressWidth = 75;
+                
+                // Simpan saran untuk dashboard
+                localStorage.setItem('bmiAdvice', JSON.stringify([
+                    'Kurangi asupan makanan tinggi kalori dan gula',
+                    'Tingkatkan konsumsi serat dari sayuran dan buah',
+                    'Lakukan olahraga kardio 30 menit setiap hari',
+                    'Perbanyak minum air putih sebelum makan'
+                ]));
+            } else {
+                status = 'Obesitas';
+                statusClass = 'status-obese';
+                advice = 'IMT Anda dalam kategori obesitas. Disarankan untuk berkonsultasi dengan dokter atau ahli gizi untuk program penurunan berat badan yang sehat dan berkelanjutan.';
+                progressWidth = 95;
+                
+                // Simpan saran untuk dashboard
+                localStorage.setItem('bmiAdvice', JSON.stringify([
+                    'Konsultasikan dengan ahli gizi untuk program penurunan berat badan',
+                    'Kurangi porsi makan secara bertahap',
+                    'Hindari makanan cepat saji dan minuman manis',
+                    'Tingkatkan aktivitas fisik secara konsisten'
+                ]));
+            }
+            
+            // Tampilkan hasil
+            document.getElementById('bmi-value').textContent = roundedBmi;
+            document.getElementById('bmi-status').textContent = status;
+            document.getElementById('bmi-status').className = `status-badge ${statusClass}`;
+            document.getElementById('bmi-progress').style.width = `${progressWidth}%`;
+            document.getElementById('bmi-advice').innerHTML = `<p>${advice}</p>`;
+            
+            // Tampilkan container hasil
+            document.getElementById('bmi-results').style.display = 'block';
+            
+            // Update saran di dashboard
+            updateAdviceDashboard();
+        });
+        
+        // Cek Risiko Anemia
+        document.getElementById('anemia-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            // Ambil nilai dari form
+            const ironIntake = document.getElementById('iron-intake').value;
+            const greensIntake = document.getElementById('greens-intake').value;
+            const teaCoffee = document.getElementById('tea-coffee').value;
+            const symptoms = Array.from(document.querySelectorAll('input[type="checkbox"]:checked')).map(cb => cb.value);
+            const menstruation = document.getElementById('menstruation').value;
+            const gender = document.getElementById('gender').value;
+            
+            // Hitung skor risiko
+            let riskScore = 0;
+            
+            // Skor berdasarkan asupan zat besi
+            if (ironIntake === 'rare') riskScore += 3;
+            else if (ironIntake === 'occasional') riskScore += 2;
+            else if (ironIntake === 'regular') riskScore += 1;
+            
+            // Skor berdasarkan asupan sayuran hijau
+            if (greensIntake === 'rare') riskScore += 2;
+            else if (greensIntake === 'occasional') riskScore += 1;
+            
+            // Skor berdasarkan kebiasaan minum teh/kopi setelah makan
+            if (teaCoffee === 'yes') riskScore += 2;
+            else if (teaCoffee === 'sometimes') riskScore += 1;
+            
+            // Skor berdasarkan gejala
+            riskScore += symptoms.length;
+            
+            // Skor tambahan untuk perempuan dengan menstruasi berat
+            if (gender === 'female' && menstruation === 'heavy') riskScore += 2;
+            
+            // Tentukan kategori risiko
+            let riskCategory = '';
+            let riskClass = '';
+            let advice = '';
+            
+            if (riskScore <= 3) {
+                riskCategory = 'Rendah';
+                riskClass = 'status-low';
+                advice = 'Risiko anemia Anda rendah. Pertahankan pola makan sehat dengan asupan zat besi yang cukup.';
+                
+                // Simpan saran untuk dashboard
+                localStorage.setItem('anemiaAdvice', JSON.stringify([
+                    'Pertahankan konsumsi makanan kaya zat besi',
+                    'Kombinasikan sumber zat besi dengan vitamin C untuk penyerapan optimal',
+                    'Lakukan pemeriksaan hemoglobin rutin setahun sekali'
+                ]));
+            } else if (riskScore <= 6) {
+                riskCategory = 'Sedang';
+                riskClass = 'status-medium';
+                advice = 'Risiko anemia Anda sedang. Perhatikan asupan zat besi dan vitamin C. Hindari minum teh/kopi setelah makan.';
+                
+                // Simpan saran untuk dashboard
+                localStorage.setItem('anemiaAdvice', JSON.stringify([
+                    'Tingkatkan konsumsi daging merah, hati ayam, atau ikan',
+                    'Konsumsi sayuran hijau dengan sumber vitamin C seperti jeruk',
+                    'Hindari minum teh atau kopi 1 jam sebelum/sesudah makan',
+                    'Pertimbangkan suplemen zat besi jika diperlukan'
+                ]));
+            } else {
+                riskCategory = 'Tinggi';
+                riskClass = 'status-high';
+                advice = 'Risiko anemia Anda tinggi. Disarankan untuk berkonsultasi dengan dokter dan melakukan pemeriksaan darah. Perbaiki pola makan dengan meningkatkan asupan zat besi.';
+                
+                // Simpan saran untuk dashboard
+                localStorage.setItem('anemiaAdvice', JSON.stringify([
+                    'Konsultasikan dengan dokter untuk pemeriksaan hemoglobin',
+                    'Tingkatkan konsumsi makanan kaya zat besi secara signifikan',
+                    'Konsumsi suplemen zat besi sesuai anjuran dokter',
+                    'Hindari minum teh/kopi setidaknya 2 jam sekitar waktu makan'
+                ]));
+            }
+            
+            // Tampilkan hasil
+            document.getElementById('anemia-risk').textContent = riskCategory;
+            document.getElementById('anemia-status').textContent = riskCategory;
+            document.getElementById('anemia-status').className = `status-badge ${riskClass}`;
+            document.getElementById('anemia-advice').innerHTML = `<p>${advice}</p>`;
+            
+            // Tampilkan container hasil
+            document.getElementById('anemia-results').style.display = 'block';
+            
+            // Update saran di dashboard
+            updateAdviceDashboard();
+        });
+        
+        // Cek Kebutuhan Protein
+        document.getElementById('protein-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            // Ambil nilai dari form
+            const weight = parseFloat(document.getElementById('protein-weight').value);
+            const activity = document.getElementById('protein-activity').value;
+            const intake = document.getElementById('protein-intake').value;
+            
+            // Hitung kebutuhan protein (1.2-2.0 g/kg berat badan tergantung aktivitas)
+            let proteinMultiplier = 1.2; // Default untuk sedentary
+            
+            if (activity === 'light') proteinMultiplier = 1.4;
+            else if (activity === 'moderate') proteinMultiplier = 1.6;
+            else if (activity === 'active') proteinMultiplier = 1.8;
+            else if (activity === 'very-active') proteinMultiplier = 2.0;
+            
+            const proteinNeed = Math.round(weight * proteinMultiplier);
+            
+            // Estimasi konsumsi protein berdasarkan porsi
+            let intakeGrams = 0;
+            if (intake === 'low') intakeGrams = weight * 0.8;
+            else if (intake === 'medium') intakeGrams = weight * 1.2;
+            else if (intake === 'high') intakeGrams = weight * 1.8;
+            
+            const intakePercent = Math.round((intakeGrams / proteinNeed) * 100);
+            
+            // Tentukan status
+            let status = '';
+            let statusClass = '';
+            let advice = '';
+            let progressWidth = 50;
+            
+            if (intakePercent < 80) {
+                status = 'Kurang';
+                statusClass = 'status-underweight';
+                advice = `Konsumsi protein Anda ${intakePercent}% dari kebutuhan. Disarankan untuk meningkatkan asupan protein seperti telur, daging, ikan, tahu, dan tempe.`;
+                progressWidth = 30;
+            } else if (intakePercent <= 120) {
+                status = 'Cukup';
+                statusClass = 'status-normal';
+                advice = `Konsumsi protein Anda ${intakePercent}% dari kebutuhan. Pertahankan asupan protein yang seimbang.`;
+                progressWidth = 60;
+            } else {
+                status = 'Berlebih';
+                statusClass = 'status-overweight';
+                advice = `Konsumsi protein Anda ${intakePercent}% dari kebutuhan. Asupan protein berlebih dapat membebani ginjal. Pertimbangkan untuk menyeimbangkan dengan karbohidrat dan lemak sehat.`;
+                progressWidth = 90;
+            }
+            
+            // Tampilkan hasil
+            document.getElementById('protein-need').textContent = `${proteinNeed} g/hari`;
+            document.getElementById('protein-status').textContent = status;
+            document.getElementById('protein-status').className = `status-badge ${statusClass}`;
+            document.getElementById('protein-progress').style.width = `${progressWidth}%`;
+            document.getElementById('protein-advice').innerHTML = `<p>${advice}</p>`;
+            
+            // Tampilkan container hasil
+            document.getElementById('protein-results').style.display = 'block';
+            
+            // Update saran di dashboard
+            updateNutrientAdvice();
+        });
+        
+        // Cek Kebutuhan Karbohidrat
+        document.getElementById('carbs-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            // Ambil nilai dari form
+            const weight = parseFloat(document.getElementById('carbs-weight').value);
+            const activity = document.getElementById('carbs-activity').value;
+            const intake = document.getElementById('carbs-intake').value;
+            
+            // Hitung kebutuhan karbohidrat (4-7 g/kg berat badan tergantung aktivitas)
+            let carbsMultiplier = 4; // Default untuk sedentary
+            
+            if (activity === 'light') carbsMultiplier = 5;
+            else if (activity === 'moderate') carbsMultiplier = 6;
+            else if (activity === 'active') carbsMultiplier = 7;
+            else if (activity === 'very-active') carbsMultiplier = 8;
+            
+            const carbsNeed = Math.round(weight * carbsMultiplier);
+            
+            // Estimasi konsumsi karbohidrat berdasarkan porsi
+            let intakeGrams = 0;
+            if (intake === 'low') intakeGrams = weight * 3;
+            else if (intake === 'medium') intakeGrams = weight * 5;
+            else if (intake === 'high') intakeGrams = weight * 7;
+            
+            const intakePercent = Math.round((intakeGrams / carbsNeed) * 100);
+            
+            // Tentukan status
+            let status = '';
+            let statusClass = '';
+            let advice = '';
+            let progressWidth = 50;
+            
+            if (intakePercent < 80) {
+                status = 'Kurang';
+                statusClass = 'status-underweight';
+                advice = `Konsumsi karbohidrat Anda ${intakePercent}% dari kebutuhan. Karbohidrat penting untuk energi. Tambahkan sumber karbohidrat kompleks seperti nasi merah, oat, atau roti gandum.`;
+                progressWidth = 30;
+            } else if (intakePercent <= 120) {
+                status = 'Cukup';
+                statusClass = 'status-normal';
+                advice = `Konsumsi karbohidrat Anda ${intakePercent}% dari kebutuhan. Pertahankan asupan karbohidrat yang seimbang dengan preferensi pada karbohidrat kompleks.`;
+                progressWidth = 60;
+            } else {
+                status = 'Berlebih';
+                statusClass = 'status-overweight';
+                advice = `Konsumsi karbohidrat Anda ${intakePercent}% dari kebutuhan. Asupan karbohidrat berlebih dapat menyebabkan kenaikan berat badan. Kurangi karbohidrat sederhana dan gula tambahan.`;
+                progressWidth = 90;
+            }
+            
+            // Tampilkan hasil
+            document.getElementById('carbs-need').textContent = `${carbsNeed} g/hari`;
+            document.getElementById('carbs-status').textContent = status;
+            document.getElementById('carbs-status').className = `status-badge ${statusClass}`;
+            document.getElementById('carbs-progress').style.width = `${progressWidth}%`;
+            document.getElementById('carbs-advice').innerHTML = `<p>${advice}</p>`;
+            
+            // Tampilkan container hasil
+            document.getElementById('carbs-results').style.display = 'block';
+            
+            // Update saran di dashboard
+            updateNutrientAdvice();
+        });
+        
+        // Cek Kebutuhan Lemak
+        document.getElementById('fat-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            // Ambil nilai dari form
+            const weight = parseFloat(document.getElementById('fat-weight').value);
+            const activity = document.getElementById('fat-activity').value;
+            const intake = document.getElementById('fat-intake').value;
+            const fatTypes = Array.from(document.querySelectorAll('#fat-form input[type="checkbox"]:checked')).map(cb => cb.value);
+            
+            // Hitung kebutuhan lemak (0.8-1.2 g/kg berat badan tergantung aktivitas)
+            let fatMultiplier = 0.8; // Default untuk sedentary
+            
+            if (activity === 'light') fatMultiplier = 0.9;
+            else if (activity === 'moderate') fatMultiplier = 1.0;
+            else if (activity === 'active') fatMultiplier = 1.1;
+            else if (activity === 'very-active') fatMultiplier = 1.2;
+            
+            const fatNeed = Math.round(weight * fatMultiplier);
+            
+            // Estimasi konsumsi lemak berdasarkan porsi
+            let intakeGrams = 0;
+            if (intake === 'low') intakeGrams = weight * 0.6;
+            else if (intake === 'medium') intakeGrams = weight * 0.9;
+            else if (intake === 'high') intakeGrams = weight * 1.3;
+            
+            const intakePercent = Math.round((intakeGrams / fatNeed) * 100);
+            
+            // Tentukan status
+            let status = '';
+            let statusClass = '';
+            let advice = '';
+            let progressWidth = 50;
+            
+            if (intakePercent < 80) {
+                status = 'Kurang';
+                statusClass = 'status-underweight';
+                advice = `Konsumsi lemak Anda ${intakePercent}% dari kebutuhan. Lemak penting untuk penyerapan vitamin dan kesehatan hormon. Tambahkan sumber lemak sehat seperti alpukat, kacang, dan minyak zaitun.`;
+                progressWidth = 30;
+            } else if (intakePercent <= 120) {
+                status = 'Cukup';
+                statusClass = 'status-normal';
+                advice = `Konsumsi lemak Anda ${intakePercent}% dari kebutuhan. Pertahankan asupan lemak sehat dan batasi lemak jenuh.`;
+                progressWidth = 60;
+            } else {
+                status = 'Berlebih';
+                statusClass = 'status-overweight';
+                advice = `Konsumsi lemak Anda ${intakePercent}% dari kebutuhan. Asupan lemak berlebih dapat meningkatkan risiko penyakit jantung. Kurangi makanan gorengan dan lemak jenuh.`;
+                progressWidth = 90;
+            }
+            
+            // Tambahkan saran berdasarkan jenis lemak yang dikonsumsi
+            if (fatTypes.includes('saturated') && !fatTypes.includes('unsaturated')) {
+                advice += ' Perbanyak konsumsi lemak tak jenuh (alpukat, kacang, minyak zaitun) dan kurangi lemak jenuh.';
+            }
+            
+            if (fatTypes.includes('trans')) {
+                advice += ' Hindari konsumsi lemak trans (makanan olahan, margarin) karena berbahaya bagi kesehatan.';
+            }
+            
+            // Tampilkan hasil
+            document.getElementById('fat-need').textContent = `${fatNeed} g/hari`;
+            document.getElementById('fat-status').textContent = status;
+            document.getElementById('fat-status').className = `status-badge ${statusClass}`;
+            document.getElementById('fat-progress').style.width = `${progressWidth}%`;
+            document.getElementById('fat-advice').innerHTML = `<p>${advice}</p>`;
+            
+            // Tampilkan container hasil
+            document.getElementById('fat-results').style.display = 'block';
+            
+            // Update saran di dashboard
+            updateNutrientAdvice();
+        });
+        
+        // Cek Kebutuhan Serat
+        document.getElementById('fiber-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            // Ambil nilai dari form
+            const weight = parseFloat(document.getElementById('fiber-weight').value);
+            const gender = document.getElementById('fiber-gender').value;
+            const intake = document.getElementById('fiber-intake').value;
+            const fiberTypes = Array.from(document.querySelectorAll('#fiber-form input[type="checkbox"]:checked')).map(cb => cb.value);
+            
+            // Hitung kebutuhan serat (berdasarkan jenis kelamin)
+            let fiberNeed = gender === 'male' ? 30 : 25; // Pria 30g, wanita 25g per hari
+            
+            // Estimasi konsumsi serat berdasarkan tingkat konsumsi
+            let intakeGrams = 0;
+            if (intake === 'low') intakeGrams = 15;
+            else if (intake === 'medium') intakeGrams = 25;
+            else if (intake === 'high') intakeGrams = 35;
+            
+            const intakePercent = Math.round((intakeGrams / fiberNeed) * 100);
+            
+            // Tentukan status
+            let status = '';
+            let statusClass = '';
+            let advice = '';
+            let progressWidth = 50;
+            
+            if (intakePercent < 80) {
+                status = 'Kurang';
+                statusClass = 'status-underweight';
+                advice = `Konsumsi serat Anda ${intakePercent}% dari kebutuhan. Serat penting untuk pencernaan dan kesehatan usus. Perbanyak konsumsi sayuran, buah, dan biji-bijian utuh.`;
+                progressWidth = 30;
+            } else if (intakePercent <= 120) {
+                status = 'Cukup';
+                statusClass = 'status-normal';
+                advice = `Konsumsi serat Anda ${intakePercent}% dari kebutuhan. Pertahankan asupan serat yang cukup untuk kesehatan pencernaan.`;
+                progressWidth = 60;
+            } else {
+                status = 'Berlebih';
+                statusClass = 'status-overweight';
+                advice = `Konsumsi serat Anda ${intakePercent}% dari kebutuhan. Asupan serat berlebih dapat menyebabkan gangguan pencernaan. Pastikan untuk minum cukup air.`;
+                progressWidth = 90;
+            }
+            
+            // Berikan saran berdasarkan jenis serat yang dikonsumsi
+            if (!fiberTypes.includes('vegetables')) {
+                advice += ' Tambahkan lebih banyak sayuran dalam setiap makanan.';
+            }
+            
+            if (!fiberTypes.includes('fruits')) {
+                advice += ' Konsumsi buah-buahan sebagai camilan sehat.';
+            }
+            
+            // Tampilkan hasil
+            document.getElementById('fiber-need').textContent = `${fiberNeed} g/hari`;
+            document.getElementById('fiber-status').textContent = status;
+            document.getElementById('fiber-status').className = `status-badge ${statusClass}`;
+            document.getElementById('fiber-progress').style.width = `${progressWidth}%`;
+            document.getElementById('fiber-advice').innerHTML = `<p>${advice}</p>`;
+            
+            // Tampilkan container hasil
+            document.getElementById('fiber-results').style.display = 'block';
+            
+            // Update saran di dashboard
+            updateNutrientAdvice();
+        });
+        
+        // Cek Kebutuhan Cairan
+        document.getElementById('fluid-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            // Ambil nilai dari form
+            const weight = parseFloat(document.getElementById('fluid-weight').value);
+            const activity = document.getElementById('fluid-activity').value;
+            const intake = document.getElementById('fluid-intake').value;
+            const fluidTypes = Array.from(document.querySelectorAll('#fluid-form input[type="checkbox"]:checked')).map(cb => cb.value);
+            
+            // Hitung kebutuhan cairan (30-40 ml/kg berat badan tergantung aktivitas)
+            let fluidMultiplier = 30; // Default untuk sedentary
+            
+            if (activity === 'light') fluidMultiplier = 32;
+            else if (activity === 'moderate') fluidMultiplier = 35;
+            else if (activity === 'active') fluidMultiplier = 38;
+            else if (activity === 'very-active') fluidMultiplier = 40;
+            
+            const fluidNeed = Math.round(weight * fluidMultiplier);
+            const fluidNeedCups = Math.round(fluidNeed / 240); // Konversi ke gelas (240ml per gelas)
+            
+            // Estimasi konsumsi cairan berdasarkan gelas
+            let intakeML = 0;
+            if (intake === 'low') intakeML = 1200; // 5 gelas
+            else if (intake === 'medium') intakeML = 1920; // 8 gelas
+            else if (intake === 'high') intakeML = 2640; // 11 gelas
+            
+            const intakePercent = Math.round((intakeML / fluidNeed) * 100);
+            
+            // Tentukan status
+            let status = '';
+            let statusClass = '';
+            let advice = '';
+            let progressWidth = 50;
+            
+            if (intakePercent < 80) {
+                status = 'Kurang';
+                statusClass = 'status-underweight';
+                advice = `Konsumsi cairan Anda ${intakePercent}% dari kebutuhan. Cairan penting untuk fungsi tubuh. Tingkatkan asupan air putih dan kurangi minuman manis.`;
+                progressWidth = 30;
+            } else if (intakePercent <= 120) {
+                status = 'Cukup';
+                statusClass = 'status-normal';
+                advice = `Konsumsi cairan Anda ${intakePercent}% dari kebutuhan. Pertahankan hidrasi yang cukup untuk kesehatan optimal.`;
+                progressWidth = 60;
+            } else {
+                status = 'Berlebih';
+                statusClass = 'status-overweight';
+                advice = `Konsumsi cairan Anda ${intakePercent}% dari kebutuhan. Asupan cairan berlebih dapat membebani ginjal. Pastikan untuk tidak minum berlebihan dalam waktu singkat.`;
+                progressWidth = 90;
+            }
+            
+            // Berikan saran berdasarkan jenis cairan yang dikonsumsi
+            if (!fluidTypes.includes('water') && fluidTypes.includes('soda')) {
+                advice += ' Ganti minuman bersoda dengan air putih untuk kesehatan yang lebih baik.';
+            }
+            
+            if (fluidTypes.includes('tea-coffee')) {
+                advice += ' Batasi konsumsi teh/kopi karena dapat menyebabkan dehidrasi.';
+            }
+            
+            // Tampilkan hasil
+            document.getElementById('fluid-need').textContent = `${fluidNeed} ml/hari (sekitar ${fluidNeedCups} gelas)`;
+            document.getElementById('fluid-status').textContent = status;
+            document.getElementById('fluid-status').className = `status-badge ${statusClass}`;
+            document.getElementById('fluid-progress').style.width = `${progressWidth}%`;
+            document.getElementById('fluid-advice').innerHTML = `<p>${advice}</p>`;
+            
+            // Tampilkan container hasil
+            document.getElementById('fluid-results').style.display = 'block';
+            
+            // Update saran di dashboard
+            updateNutrientAdvice();
+        });
+        
+        // Catatan Makan Harian
+        let selectedCategories = [];
+        
+        document.querySelectorAll('.food-category').forEach(category => {
+            category.addEventListener('click', function() {
+                this.classList.toggle('selected');
+                const categoryType = this.getAttribute('data-category');
+                
+                if (this.classList.contains('selected')) {
+                    selectedCategories.push(categoryType);
+                } else {
+                    selectedCategories = selectedCategories.filter(cat => cat !== categoryType);
+                }
+            });
+        });
+        
+        document.getElementById('save-food').addEventListener('click', function() {
+            if (selectedCategories.length === 0) {
+                alert('Pilih minimal satu kategori makanan terlebih dahulu.');
+                return;
+            }
+            
+            // Simpan catatan makan
+            localStorage.setItem('foodRecord', JSON.stringify(selectedCategories));
+            
+            // Analisis pola makan
+            let insight = '';
+            let progressWidth = 50;
+            let adviceList = [];
+            
+            const hasCarbs = selectedCategories.includes('carbs');
+            const hasProtein = selectedCategories.includes('protein');
+            const hasVegetables = selectedCategories.includes('vegetables');
+            const hasFruits = selectedCategories.includes('fruits');
+            const hasSweetDrinks = selectedCategories.includes('sweet-drinks');
+            const hasSnacks = selectedCategories.includes('snacks');
+            
+            // Berikan insight berdasarkan pola makan
+            if (hasCarbs && hasProtein && hasVegetables && hasFruits) {
+                insight = 'Pola makan Anda hari ini sangat seimbang! Terus pertahankan.';
+                progressWidth = 90;
+                adviceList = [
+                    'Pertahankan pola makan seimbang seperti ini',
+                    'Variasi sumber protein dan karbohidrat untuk nutrisi lengkap',
+                    'Jaga konsistensi pola makan sehat'
+                ];
+            } else if (hasCarbs && hasProtein && (hasVegetables || hasFruits)) {
+                insight = 'Pola makan Anda cukup baik. Coba tambahkan lebih banyak sayur dan buah.';
+                progressWidth = 70;
+                adviceList = [
+                    'Tambah porsi sayuran dalam setiap makan',
+                    'Sertakan buah sebagai camilan sehat',
+                    'Pastikan konsumsi protein yang cukup'
+                ];
+            } else if (hasCarbs && hasProtein) {
+                insight = 'Pola makan Anda kurang serat. Perbanyak konsumsi sayur dan buah.';
+                progressWidth = 50;
+                adviceList = [
+                    'Tambah minimal 2 porsi sayuran setiap hari',
+                    'Konsumsi 1-2 porsi buah sebagai camilan',
+                    'Pilih karbohidrat berserat tinggi seperti nasi merah'
+                ];
+            } else if (hasCarbs && !hasProtein) {
+                insight = 'Asupan protein Anda kurang. Tambahkan sumber protein seperti telur, daging, atau tahu.';
+                progressWidth = 30;
+                adviceList = [
+                    'Tambah sumber protein setiap kali makan',
+                    'Kombinasikan protein hewani dan nabati',
+                    'Sertakan kacang-kacangan sebagai camilan'
+                ];
+            } else {
+                insight = 'Pola makan Anda perlu perbaikan. Usahakan untuk mengonsumsi makanan dengan gizi seimbang.';
+                progressWidth = 20;
+                adviceList = [
+                    'Rencanakan menu makan dengan gizi seimbang',
+                    'Sertakan karbohidrat, protein, dan serat setiap makan',
+                    'Kurangi makanan olahan dan minuman manis'
+                ];
+            }
+            
+            // Tambahkan peringatan jika konsumsi minuman manis tinggi
+            if (hasSweetDrinks) {
+                insight += ' Kurangi konsumsi minuman manis untuk kesehatan yang lebih baik.';
+                adviceList.push('Ganti minuman manis dengan air putih atau infused water');
+            }
+            
+            // Simpan saran untuk dashboard
+            localStorage.setItem('foodAdvice', JSON.stringify(adviceList));
+            
+            // Tampilkan hasil
+            document.getElementById('food-insight').innerHTML = `<p>${insight}</p>`;
+            document.getElementById('food-progress').style.width = `${progressWidth}%`;
+            
+            // Tampilkan container hasil
+            document.getElementById('food-results').style.display = 'block';
+            
+            // Update saran di dashboard
+            updateAdviceDashboard();
+        });
+        
+        // Fungsi untuk memperbarui dashboard saran nutrisi
+        function updateNutrientAdvice() {
+            const nutrientAdvice = [
+                'Konsumsi makanan dengan gizi seimbang setiap hari',
+                'Perhatikan porsi makan sesuai kebutuhan tubuh',
+                'Pilih sumber karbohidrat kompleks seperti nasi merah dan gandum utuh',
+                'Konsumsi protein dari berbagai sumber (hewani dan nabati)',
+                'Batasi konsumsi lemak jenuh dan lemak trans',
+                'Perbanyak serat dari sayuran dan buah-buahan',
+                'Minum air putih yang cukup sepanjang hari'
+            ];
+            
+            localStorage.setItem('nutrientAdvice', JSON.stringify(nutrientAdvice));
+            updateAdviceDashboard();
+        }
+        
+        // Fungsi untuk memperbarui dashboard saran
+        function updateAdviceDashboard() {
+            // Update saran berdasarkan IMT
+            const bmiAdvice = JSON.parse(localStorage.getItem('bmiAdvice'));
+            if (bmiAdvice) {
+                const bmiList = document.getElementById('bmi-advice-list');
+                bmiList.innerHTML = '';
+                bmiAdvice.forEach(advice => {
+                    const li = document.createElement('li');
+                    li.innerHTML = `<i class="fas fa-check-circle advice-icon"></i> ${advice}`;
+                    bmiList.appendChild(li);
+                });
+            }
+            
+            // Update saran berdasarkan anemia
+            const anemiaAdvice = JSON.parse(localStorage.getItem('anemiaAdvice'));
+            if (anemiaAdvice) {
+                const anemiaList = document.getElementById('anemia-advice-list');
+                anemiaList.innerHTML = '';
+                anemiaAdvice.forEach(advice => {
+                    const li = document.createElement('li');
+                    li.innerHTML = `<i class="fas fa-check-circle advice-icon"></i> ${advice}`;
+                    anemiaList.appendChild(li);
+                });
+            }
+            
+            // Update saran berdasarkan nutrisi
+            const nutrientAdvice = JSON.parse(localStorage.getItem('nutrientAdvice'));
+            if (nutrientAdvice) {
+                const nutrientList = document.getElementById('nutrient-advice-list');
+                nutrientList.innerHTML = '';
+                nutrientAdvice.forEach(advice => {
+                    const li = document.createElement('li');
+                    li.innerHTML = `<i class="fas fa-check-circle advice-icon"></i> ${advice}`;
+                    nutrientList.appendChild(li);
+                });
+            }
+            
+            // Update saran berdasarkan pola makan
+            const foodAdvice = JSON.parse(localStorage.getItem('foodAdvice'));
+            if (foodAdvice) {
+                const foodList = document.getElementById('food-advice-list');
+                foodList.innerHTML = '';
+                foodAdvice.forEach(advice => {
+                    const li = document.createElement('li');
+                    li.innerHTML = `<i class="fas fa-check-circle advice-icon"></i> ${advice}`;
+                    foodList.appendChild(li);
+                });
+            }
+        }
+        
+        // Inisialisasi dashboard
+        updateAdviceDashboard();
+    </script>
+</body>
+</html>
